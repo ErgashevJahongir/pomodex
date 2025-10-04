@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/client';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { toast } from 'sonner';
 
 export function SignupForm() {
@@ -115,19 +114,9 @@ export function SignupForm() {
         />
       </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <Button type="submit" className="w-full" disabled={isLoading} size="lg">
         {isLoading ? t('loading') : t('signup')}
       </Button>
-
-      <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        {t('hasAccount')}{' '}
-        <Link
-          href="/login"
-          className="font-medium text-black underline transition-opacity duration-300 hover:no-underline hover:opacity-80 dark:text-white"
-        >
-          {t('login')}
-        </Link>
-      </p>
     </form>
   );
 }

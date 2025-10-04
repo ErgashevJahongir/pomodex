@@ -1,8 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { Settings as SettingsIcon, X, Bell } from 'lucide-react';
+import { Settings as SettingsIcon, X, Bell, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { useSettings } from '@/hooks/use-settings';
 import { useTranslations } from 'next-intl';
 
@@ -30,46 +41,57 @@ export function Settings() {
 
   return (
     <>
+      {/* Floating Settings Button */}
       <Button
         onClick={() => setIsOpen(true)}
-        variant="outline"
         size="icon"
-        className="fixed right-4 bottom-4 z-50"
+        className="fixed right-6 bottom-6 z-50 h-14 w-14 rounded-full shadow-2xl transition-all hover:scale-110"
         aria-label={t('title')}
       >
-        <SettingsIcon className="h-4 w-4" />
+        <SettingsIcon className="h-6 w-6" />
       </Button>
 
+      {/* Modal Overlay */}
       {isOpen && (
-        <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
-          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white shadow-xl dark:bg-gray-800">
-            <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                {t('title')}
-              </h2>
-              <Button
-                onClick={() => setIsOpen(false)}
-                variant="ghost"
-                size="icon"
-                aria-label={t('close')}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+        <div
+          className="animate-in fade-in-0 fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm duration-200"
+          onClick={() => setIsOpen(false)}
+        >
+          <Card
+            className="animate-in zoom-in-95 w-full max-w-2xl border-2 shadow-2xl duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CardHeader className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <SettingsIcon className="text-primary h-6 w-6" />
+                  <CardTitle className="text-2xl">{t('title')}</CardTitle>
+                </div>
+                <Button
+                  onClick={() => setIsOpen(false)}
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                  aria-label={t('close')}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+              <CardDescription>{t('description')}</CardDescription>
+            </CardHeader>
 
-            <div className="space-y-6 p-6">
+            <Separator />
+
+            <CardContent className="max-h-[60vh] space-y-6 overflow-y-auto p-6">
               {/* Timer durations */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                  {t('timerDurations')}
-                </h3>
+                <h3 className="text-lg font-semibold">{t('timerDurations')}</h3>
 
-                <div className="space-y-3">
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('pomodoroMinutes')}
-                    </label>
-                    <input
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="pomodoro">{t('pomodoroMinutes')}</Label>
+                    <Input
+                      id="pomodoro"
                       type="number"
                       min="1"
                       max="60"
@@ -79,15 +101,13 @@ export function Settings() {
                           pomodoro: parseInt(e.target.value) || 1,
                         })
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                     />
                   </div>
 
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('shortBreakMinutes')}
-                    </label>
-                    <input
+                  <div className="space-y-2">
+                    <Label htmlFor="shortBreak">{t('shortBreakMinutes')}</Label>
+                    <Input
+                      id="shortBreak"
                       type="number"
                       min="1"
                       max="30"
@@ -97,15 +117,13 @@ export function Settings() {
                           shortBreak: parseInt(e.target.value) || 1,
                         })
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                     />
                   </div>
 
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('longBreakMinutes')}
-                    </label>
-                    <input
+                  <div className="space-y-2">
+                    <Label htmlFor="longBreak">{t('longBreakMinutes')}</Label>
+                    <Input
+                      id="longBreak"
                       type="number"
                       min="1"
                       max="60"
@@ -115,60 +133,76 @@ export function Settings() {
                           longBreak: parseInt(e.target.value) || 1,
                         })
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                     />
                   </div>
                 </div>
               </div>
 
+              <Separator />
+
               {/* Auto-start settings */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                  {t('autoStart')}
-                </h3>
+                <h3 className="text-lg font-semibold">{t('autoStart')}</h3>
 
-                <div className="space-y-3">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <Label
+                        htmlFor="autoStartBreaks"
+                        className="cursor-pointer"
+                      >
+                        {t('autoStartBreaks')}
+                      </Label>
+                      <p className="text-muted-foreground text-sm">
+                        {t('autoStartBreaksDesc')}
+                      </p>
+                    </div>
+                    <Switch
+                      id="autoStartBreaks"
                       checked={settings.autoStartBreaks}
-                      onChange={(e) =>
-                        updateSettings({ autoStartBreaks: e.target.checked })
+                      onCheckedChange={(checked) =>
+                        updateSettings({ autoStartBreaks: checked })
                       }
-                      className="rounded border-gray-300 text-red-600 focus:ring-red-500"
                     />
-                    <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                      {t('autoStartBreaks')}
-                    </span>
-                  </label>
+                  </div>
 
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <Label
+                        htmlFor="autoStartPomodoros"
+                        className="cursor-pointer"
+                      >
+                        {t('autoStartPomodoros')}
+                      </Label>
+                      <p className="text-muted-foreground text-sm">
+                        {t('autoStartPomodorosDesc')}
+                      </p>
+                    </div>
+                    <Switch
+                      id="autoStartPomodoros"
                       checked={settings.autoStartPomodoros}
-                      onChange={(e) =>
-                        updateSettings({ autoStartPomodoros: e.target.checked })
+                      onCheckedChange={(checked) =>
+                        updateSettings({ autoStartPomodoros: checked })
                       }
-                      className="rounded border-gray-300 text-red-600 focus:ring-red-500"
                     />
-                    <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                      {t('autoStartPomodoros')}
-                    </span>
-                  </label>
+                  </div>
                 </div>
               </div>
 
+              <Separator />
+
               {/* Long break interval */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold">
                   {t('longBreakInterval')}
                 </h3>
 
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <div className="space-y-2">
+                  <Label htmlFor="longBreakInterval">
                     {t('longBreakAfter')}
-                  </label>
-                  <input
+                  </Label>
+                  <Input
+                    id="longBreakInterval"
                     type="number"
                     min="2"
                     max="10"
@@ -178,45 +212,49 @@ export function Settings() {
                         longBreakInterval: parseInt(e.target.value) || 2,
                       })
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                   />
+                  <p className="text-muted-foreground text-sm">
+                    {t('longBreakIntervalDesc')}
+                  </p>
                 </div>
               </div>
 
+              <Separator />
+
               {/* Notifications */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                  {t('notifications')}
-                </h3>
+                <h3 className="text-lg font-semibold">{t('notifications')}</h3>
 
                 <Button
                   onClick={handleRequestPermission}
                   variant="outline"
                   className="w-full"
+                  size="lg"
                 >
-                  <Bell className="mr-2 h-4 w-4" />
+                  <Bell className="mr-2 h-5 w-5" />
                   {t('enableNotifications')}
                 </Button>
               </div>
+            </CardContent>
 
-              {/* Action buttons */}
-              <div className="flex space-x-3 border-t border-gray-200 pt-4 dark:border-gray-700">
-                <Button
-                  onClick={handleReset}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  {t('resetToDefaults')}
-                </Button>
-                <Button
-                  onClick={handleSave}
-                  className="flex-1 bg-red-500 text-white hover:bg-red-600"
-                >
-                  {t('saveSettings')}
-                </Button>
-              </div>
-            </div>
-          </div>
+            <Separator />
+
+            {/* Action buttons */}
+            <CardContent className="flex gap-3 p-6 pt-4">
+              <Button
+                onClick={handleReset}
+                variant="outline"
+                className="flex-1"
+                size="lg"
+              >
+                <RotateCcw className="mr-2 h-4 w-4" />
+                {t('resetToDefaults')}
+              </Button>
+              <Button onClick={handleSave} className="flex-1" size="lg">
+                {t('saveSettings')}
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       )}
     </>
