@@ -24,6 +24,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = `${baseUrl}/${locale}`;
   const image = `${baseUrl}/og-image.png`;
 
+  // Locale mapping
+  const localeMap: Record<string, string> = {
+    uz: 'uz_UZ',
+    ru: 'ru_RU',
+    en: 'en_US',
+  };
+  const ogLocale = localeMap[locale] || 'en_US';
+
   return {
     title,
     description,
@@ -65,11 +73,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           alt: title,
         },
       ],
-      locale: locale === 'uz' ? 'uz_UZ' : locale === 'ru' ? 'ru_RU' : 'en_US',
+      locale: ogLocale,
       alternateLocale: ['en_US', 'ru_RU', 'uz_UZ'].filter(
-        (l) =>
-          l !==
-          (locale === 'uz' ? 'uz_UZ' : locale === 'ru' ? 'ru_RU' : 'en_US')
+        (l) => l !== ogLocale
       ),
     },
     twitter: {
@@ -99,10 +105,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function Home() {
   return (
-    <div className="min-custom-screen bg-white dark:bg-black transition-colors">
+    <div className="min-custom-screen bg-white transition-colors dark:bg-black">
       <Header />
       <main className="container mx-auto px-4">
-        <div className="flex flex-col items-center justify-center min-custom-screen">
+        <div className="min-custom-screen flex flex-col items-center justify-center">
           <h1 className="sr-only">Pomodex - Pomodoro Timer App</h1>
           <Timer />
         </div>

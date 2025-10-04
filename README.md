@@ -2,23 +2,55 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Code Quality & Formatting
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses ESLint and Prettier to maintain code quality and consistent formatting.
+
+### Available Scripts
+
+```bash
+# Run linter
+npm run lint
+
+# Fix linting errors automatically
+npm run lint:fix
+
+# Format all files with Prettier
+npm run format
+
+# Check formatting without making changes
+npm run format:check
+
+# Run both format check and lint
+npm run check
+```
+
+### Pre-commit Hooks
+
+This project uses Husky and lint-staged to automatically lint and format your code before each commit. This ensures that only properly formatted and linted code is committed to the repository.
+
+### Editor Setup
+
+For the best development experience, install the following VS Code extensions:
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+The project includes `.vscode/settings.json` with recommended settings for automatic formatting on save.
 
 ## Learn More
 

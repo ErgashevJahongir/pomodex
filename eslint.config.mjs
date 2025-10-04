@@ -30,12 +30,22 @@ const eslintConfig = [
       'no-var': 'error',
       'object-shorthand': 'error',
       'no-duplicate-imports': 'error',
+      'prefer-template': 'warn',
+      'prefer-arrow-callback': 'warn',
+      'no-nested-ternary': 'warn',
+      'no-unneeded-ternary': 'error',
 
       // React Best Practices
       'react/jsx-no-target-blank': 'error',
       'react/no-unescaped-entities': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      'react/self-closing-comp': 'error',
+      'react/jsx-curly-brace-presence': [
+        'error',
+        { props: 'never', children: 'never' },
+      ],
+      'react/jsx-boolean-value': ['error', 'never'],
 
       // TypeScript
       '@typescript-eslint/no-unused-vars': [
@@ -54,12 +64,21 @@ const eslintConfig = [
           fixStyle: 'separate-type-imports',
         },
       ],
+      '@typescript-eslint/no-non-null-assertion': 'warn',
 
       // Code Quality
       'no-unused-expressions': 'error',
       'no-unreachable': 'error',
       eqeqeq: ['error', 'always'],
       curly: ['error', 'all'],
+      'no-else-return': 'error',
+      'prefer-destructuring': [
+        'warn',
+        {
+          array: false,
+          object: true,
+        },
+      ],
     },
   },
   ...compat.extends('plugin:prettier/recommended'),

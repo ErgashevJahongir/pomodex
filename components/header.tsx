@@ -13,9 +13,9 @@ export function Header() {
   const t = useTranslations('header');
 
   return (
-    <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+    <header className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
       <Link aria-label={t('home')} href="/">
-        <Logo className="w-auto h-11 text-black dark:text-white" />
+        <Logo className="h-11 w-auto text-black dark:text-white" />
       </Link>
 
       <div className="flex items-center space-x-2">
@@ -25,10 +25,10 @@ export function Header() {
           variant="outline"
           size="icon"
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="w-9 h-9"
+          className="h-9 w-9"
         >
-          <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-4 w-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+          <Moon className="absolute h-4 w-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
           <span className="sr-only">{t('toggleTheme')}</span>
         </Button>
       </div>
