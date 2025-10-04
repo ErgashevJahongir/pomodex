@@ -16,15 +16,19 @@
   },
   "settings": {
     "title": "Settings",
+    "description": "Customize your timer settings",
     "timerDurations": "Timer Durations",
     "pomodoroMinutes": "Pomodoro (minutes)",
     "shortBreakMinutes": "Short Break (minutes)",
     "longBreakMinutes": "Long Break (minutes)",
     "autoStart": "Auto-start",
     "autoStartBreaks": "Auto-start breaks",
+    "autoStartBreaksDesc": "Start breaks automatically after work",
     "autoStartPomodoros": "Auto-start pomodoros",
+    "autoStartPomodorosDesc": "Start work automatically after breaks",
     "longBreakInterval": "Long Break Interval",
     "longBreakAfter": "Long break after (pomodoros)",
+    "longBreakIntervalDesc": "Take a long break after this many pomodoros",
     "notifications": "Notifications",
     "enableNotifications": "Enable Notifications",
     "resetToDefaults": "Reset to Defaults",
@@ -60,6 +64,7 @@
     "loginTitle": "Log in to your account",
     "signupTitle": "Create a new account",
     "loginDescription": "Enter your credentials to continue",
-    "signupDescription": "Enter your details to create a free account"
+    "signupDescription": "Enter your details to create a free account",
+    "backToHome": "Back to Home"
   }
 }

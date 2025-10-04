@@ -16,15 +16,19 @@
   },
   "settings": {
     "title": "Настройки",
+    "description": "Настройте параметры таймера",
     "timerDurations": "Длительность Таймера",
     "pomodoroMinutes": "Помодоро (минуты)",
     "shortBreakMinutes": "Короткий Перерыв (минуты)",
     "longBreakMinutes": "Длинный Перерыв (минуты)",
     "autoStart": "Автозапуск",
     "autoStartBreaks": "Автоматически запускать перерывы",
+    "autoStartBreaksDesc": "Запускать перерывы автоматически после работы",
     "autoStartPomodoros": "Автоматически запускать помодоро",
+    "autoStartPomodorosDesc": "Запускать работу автоматически после перерывов",
     "longBreakInterval": "Интервал Длинного Перерыва",
     "longBreakAfter": "Длинный перерыв после (помодоро)",
+    "longBreakIntervalDesc": "Длинный перерыв после такого количества помодоро",
     "notifications": "Уведомления",
     "enableNotifications": "Включить Уведомления",
     "resetToDefaults": "Сбросить на Значения по Умолчанию",
@@ -60,6 +64,7 @@
     "loginTitle": "Войдите в свой аккаунт",
     "signupTitle": "Создайте новый аккаунт",
     "loginDescription": "Введите данные для продолжения",
-    "signupDescription": "Введите данные для создания бесплатного аккаунта"
+    "signupDescription": "Введите данные для создания бесплатного аккаунта",
+    "backToHome": "Вернуться на главную"
   }
 }

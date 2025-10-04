@@ -16,15 +16,19 @@
   },
   "settings": {
     "title": "Sozlamalar",
+    "description": "Timer sozlamalarini o'zgartiring",
     "timerDurations": "Taymer Davomiyligi",
     "pomodoroMinutes": "Pomodoro (daqiqa)",
     "shortBreakMinutes": "Qisqa Tanaffus (daqiqa)",
     "longBreakMinutes": "Uzun Tanaffus (daqiqa)",
     "autoStart": "Avtomatik boshlash",
     "autoStartBreaks": "Tanaffuslarni avtomatik boshlash",
+    "autoStartBreaksDesc": "Ishdan keyin tanaffuslarni avtomatik boshlash",
     "autoStartPomodoros": "Pomodorolarni avtomatik boshlash",
+    "autoStartPomodorosDesc": "Tanaffusdan keyin ishni avtomatik boshlash",
     "longBreakInterval": "Uzun Tanaffus Oralig'i",
     "longBreakAfter": "Uzun tanaffusdan oldin (pomodorolar)",
+    "longBreakIntervalDesc": "Shuncha pomodoro'dan keyin uzun tanaffus",
     "notifications": "Bildirishnomalar",
     "enableNotifications": "Bildirishnomalarni Yoqish",
     "resetToDefaults": "Standart Sozlamalarga Qaytarish",
@@ -60,6 +64,7 @@
     "loginTitle": "Hisobingizga kiring",
     "signupTitle": "Yangi hisob yarating",
     "loginDescription": "Davom etish uchun hisobingizga kiring",
-    "signupDescription": "Bepul hisob yaratish uchun ma'lumotlaringizni kiriting"
+    "signupDescription": "Bepul hisob yaratish uchun ma'lumotlaringizni kiriting",
+    "backToHome": "Bosh sahifaga qaytish"
   }
 }
