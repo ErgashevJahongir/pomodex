@@ -5,22 +5,12 @@ export const formatTime = (seconds: number): string => {
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 };
 
-export const getProgressPercentage = (timeLeft: number, totalTime: number): number => {
+export const getProgressPercentage = (
+  timeLeft: number,
+  totalTime: number
+): number => {
   if (totalTime === 0) return 0;
   return ((totalTime - timeLeft) / totalTime) * 100;
-};
-
-export const getModeDisplayName = (mode: string): string => {
-  switch (mode) {
-    case 'pomodoro':
-      return 'Pomodoro';
-    case 'shortBreak':
-      return 'Short Break';
-    case 'longBreak':
-      return 'Long Break';
-    default:
-      return 'Pomodoro';
-  }
 };
 
 export const getModeColor = (mode: string): string => {

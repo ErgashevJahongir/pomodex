@@ -1,7 +1,19 @@
 import { useEffect, useCallback } from 'react';
 import { useTimerStore } from '@/store/timer-store';
 import { playNotificationSound, showNotification } from '@/lib/notifications';
-import { getModeDisplayName } from '@/lib/time-utils';
+
+const getModeDisplayName = (mode: string): string => {
+  switch (mode) {
+    case 'pomodoro':
+      return 'Pomodoro';
+    case 'shortBreak':
+      return 'Short Break';
+    case 'longBreak':
+      return 'Long Break';
+    default:
+      return 'Pomodoro';
+  }
+};
 
 export const useTimer = () => {
   const {
@@ -39,12 +51,12 @@ export const useTimer = () => {
     if (!isRunning && timeLeft === 0) {
       // Play notification sound
       playNotificationSound();
-      
+
       // Show browser notification
       const modeName = getModeDisplayName(mode);
       showNotification(
         `${modeName} Completed!`,
-        mode === 'pomodoro' 
+        mode === 'pomodoro'
           ? `Great job! You've completed ${completedPomodoros + 1} pomodoros.`
           : 'Break time is over. Ready for the next pomodoro?'
       );
@@ -67,9 +79,12 @@ export const useTimer = () => {
     resetTimer();
   }, [resetTimer]);
 
-  const handleModeChange = useCallback((newMode: 'pomodoro' | 'shortBreak' | 'longBreak') => {
-    setMode(newMode);
-  }, [setMode]);
+  const handleModeChange = useCallback(
+    (newMode: 'pomodoro' | 'shortBreak' | 'longBreak') => {
+      setMode(newMode);
+    },
+    [setMode]
+  );
 
   return {
     isRunning,
