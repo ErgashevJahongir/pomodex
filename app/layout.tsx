@@ -10,7 +10,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Pomodex - Pomodoro Timer",
-  description: "A beautiful and productive Pomodoro timer app built with Next.js",
+  description: "A beautiful and productive Pomodoro timer app",
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Pomodex',
+  },
 };
 
 export default function RootLayout({
