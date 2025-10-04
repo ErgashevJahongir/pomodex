@@ -30,6 +30,7 @@ export function Settings() {
         variant="outline"
         size="icon"
         className="fixed bottom-4 right-4 z-50"
+        aria-label={t('title')}
       >
         <SettingsIcon className="h-4 w-4" />
       </Button>
@@ -43,6 +44,7 @@ export function Settings() {
                 onClick={() => setIsOpen(false)}
                 variant="ghost"
                 size="icon"
+                aria-label={t('close')}
               >
                 <X className="h-4 w-4" />
               </Button>
