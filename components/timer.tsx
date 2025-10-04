@@ -47,15 +47,15 @@ export function Timer() {
   return (
     <div className="flex flex-col items-center space-y-8">
       {/* Mode selector */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+      <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
         {(['pomodoro', 'shortBreak', 'longBreak'] as const).map((timerMode) => (
           <button
             key={timerMode}
             onClick={() => useTimerStore.getState().setMode(timerMode)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
               mode === timerMode
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
             }`}
           >
             {t(timerMode)}
@@ -65,7 +65,7 @@ export function Timer() {
 
       {/* Circular progress timer */}
       <div className="relative">
-        <svg className="w-64 h-64 transform -rotate-90" viewBox="0 0 200 200">
+        <svg className="h-64 w-64 -rotate-90 transform" viewBox="0 0 200 200">
           {/* Background circle */}
           <circle
             cx="100"
@@ -93,10 +93,10 @@ export function Timer() {
 
         {/* Timer display */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className={`text-4xl font-mono font-bold ${getModeColor(mode)}`}>
+          <div className={`font-mono text-4xl font-bold ${getModeColor(mode)}`}>
             {formatTime(timeLeft)}
           </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             {t(mode)}
           </div>
         </div>
@@ -107,16 +107,16 @@ export function Timer() {
         <Button
           onClick={isRunning ? handlePause : handleStart}
           size="lg"
-          className="px-8 py-3 rounded-full"
+          className="rounded-full px-8 py-3"
         >
           {isRunning ? (
             <>
-              <Pause className="w-5 h-5 mr-2" />
+              <Pause className="mr-2 h-5 w-5" />
               {t('pause')}
             </>
           ) : (
             <>
-              <Play className="w-5 h-5 mr-2" />
+              <Play className="mr-2 h-5 w-5" />
               {isPaused ? t('resume') : t('start')}
             </>
           )}
@@ -126,9 +126,9 @@ export function Timer() {
           onClick={handleReset}
           variant="outline"
           size="lg"
-          className="px-8 py-3 rounded-full"
+          className="rounded-full px-8 py-3"
         >
-          <RotateCcw className="w-5 h-5 mr-2" />
+          <RotateCcw className="mr-2 h-5 w-5" />
           {t('reset')}
         </Button>
       </div>
