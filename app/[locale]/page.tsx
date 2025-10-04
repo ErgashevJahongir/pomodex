@@ -11,19 +11,19 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
-  
+
   const title = t('title');
   const description = t('description');
-  
+
   // Development va production uchun to'g'ri URL
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                  process.env.VERCEL_URL 
-                    ? `https://${process.env.VERCEL_URL}`
-                    : 'http://localhost:3000';
-  
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
+
   const url = `${baseUrl}/${locale}`;
   const image = `${baseUrl}/og-image.png`;
-  
+
   return {
     title,
     description,
@@ -46,9 +46,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: url,
       languages: {
-        'en': `${baseUrl}/en`,
-        'ru': `${baseUrl}/ru`,
-        'uz': `${baseUrl}/uz`,
+        en: `${baseUrl}/en`,
+        ru: `${baseUrl}/ru`,
+        uz: `${baseUrl}/uz`,
       },
     },
     openGraph: {
@@ -67,7 +67,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
       locale: locale === 'uz' ? 'uz_UZ' : locale === 'ru' ? 'ru_RU' : 'en_US',
       alternateLocale: ['en_US', 'ru_RU', 'uz_UZ'].filter(
-        (l) => l !== (locale === 'uz' ? 'uz_UZ' : locale === 'ru' ? 'ru_RU' : 'en_US')
+        (l) =>
+          l !==
+          (locale === 'uz' ? 'uz_UZ' : locale === 'ru' ? 'ru_RU' : 'en_US')
       ),
     },
     twitter: {

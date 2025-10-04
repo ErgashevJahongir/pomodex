@@ -13,16 +13,16 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale as typeof routing.locales[number])) {
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
     notFound();
   }
 
   const messages = await getMessages();
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                  process.env.VERCEL_URL 
-                    ? `https://${process.env.VERCEL_URL}`
-                    : 'http://localhost:3000';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
 
   // JSON-LD Structured Data
   const jsonLd = {
@@ -43,7 +43,8 @@ export default async function LocaleLayout({
       bestRating: '5',
       worstRating: '1',
     },
-    description: 'A beautiful and productive Pomodoro timer app for managing your time effectively',
+    description:
+      'A beautiful and productive Pomodoro timer app for managing your time effectively',
     url: `${baseUrl}/${locale}`,
     inLanguage: locale,
     browserRequirements: 'Requires JavaScript. Requires HTML5.',
@@ -61,4 +62,3 @@ export default async function LocaleLayout({
     </NextIntlClientProvider>
   );
 }
-

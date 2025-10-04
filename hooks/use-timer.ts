@@ -51,12 +51,12 @@ export const useTimer = () => {
     if (!isRunning && timeLeft === 0) {
       // Play notification sound
       playNotificationSound();
-      
+
       // Show browser notification
       const modeName = getModeDisplayName(mode);
       showNotification(
         `${modeName} Completed!`,
-        mode === 'pomodoro' 
+        mode === 'pomodoro'
           ? `Great job! You've completed ${completedPomodoros + 1} pomodoros.`
           : 'Break time is over. Ready for the next pomodoro?'
       );
@@ -79,9 +79,12 @@ export const useTimer = () => {
     resetTimer();
   }, [resetTimer]);
 
-  const handleModeChange = useCallback((newMode: 'pomodoro' | 'shortBreak' | 'longBreak') => {
-    setMode(newMode);
-  }, [setMode]);
+  const handleModeChange = useCallback(
+    (newMode: 'pomodoro' | 'shortBreak' | 'longBreak') => {
+      setMode(newMode);
+    },
+    [setMode]
+  );
 
   return {
     isRunning,

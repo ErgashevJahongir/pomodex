@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -144,11 +144,11 @@
   }
 }
 
-.custom-screen{
+.custom-screen {
   height: calc(100vh - 80px);
 }
 
-.min-custom-screen{
+.min-custom-screen {
   min-height: calc(100vh - 80px);
 }
 
