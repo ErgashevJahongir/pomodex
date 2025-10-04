@@ -1,0 +1,36 @@
+{
+  "header": {
+    "toggleTheme": "Mavzuni o'zgartirish"
+  },
+  "timer": {
+    "pomodoro": "Pomodoro",
+    "shortBreak": "Qisqa Tanaffus",
+    "longBreak": "Uzun Tanaffus",
+    "pause": "Pauza",
+    "start": "Boshlash",
+    "resume": "Davom etish",
+    "reset": "Qayta boshlash",
+    "completedPomodoros": "Tugallangan Pomodorolar"
+  },
+  "settings": {
+    "title": "Sozlamalar",
+    "timerDurations": "Taymer Davomiyligi",
+    "pomodoroMinutes": "Pomodoro (daqiqa)",
+    "shortBreakMinutes": "Qisqa Tanaffus (daqiqa)",
+    "longBreakMinutes": "Uzun Tanaffus (daqiqa)",
+    "autoStart": "Avtomatik boshlash",
+    "autoStartBreaks": "Tanaffuslarni avtomatik boshlash",
+    "autoStartPomodoros": "Pomodorolarni avtomatik boshlash",
+    "longBreakInterval": "Uzun Tanaffus Oralig'i",
+    "longBreakAfter": "Uzun tanaffusdan oldin (pomodorolar)",
+    "notifications": "Bildirishnomalar",
+    "enableNotifications": "Bildirishnomalarni Yoqish",
+    "resetToDefaults": "Standart Sozlamalarga Qaytarish",
+    "saveSettings": "Sozlamalarni Saqlash"
+  },
+  "metadata": {
+    "title": "Pomodex - Pomodoro Taymer",
+    "description": "Chiroyli va samarali Pomodoro taymer ilovasi"
+  }
+}
+

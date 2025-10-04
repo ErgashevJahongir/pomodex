@@ -10,19 +10,6 @@ export const getProgressPercentage = (timeLeft: number, totalTime: number): numb
   return ((totalTime - timeLeft) / totalTime) * 100;
 };
 
-export const getModeDisplayName = (mode: string): string => {
-  switch (mode) {
-    case 'pomodoro':
-      return 'Pomodoro';
-    case 'shortBreak':
-      return 'Short Break';
-    case 'longBreak':
-      return 'Long Break';
-    default:
-      return 'Pomodoro';
-  }
-};
-
 export const getModeColor = (mode: string): string => {
   switch (mode) {
     case 'pomodoro':

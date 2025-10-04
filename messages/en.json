@@ -1,0 +1,36 @@
+{
+  "header": {
+    "toggleTheme": "Toggle theme"
+  },
+  "timer": {
+    "pomodoro": "Pomodoro",
+    "shortBreak": "Short Break",
+    "longBreak": "Long Break",
+    "pause": "Pause",
+    "start": "Start",
+    "resume": "Resume",
+    "reset": "Reset",
+    "completedPomodoros": "Completed Pomodoros"
+  },
+  "settings": {
+    "title": "Settings",
+    "timerDurations": "Timer Durations",
+    "pomodoroMinutes": "Pomodoro (minutes)",
+    "shortBreakMinutes": "Short Break (minutes)",
+    "longBreakMinutes": "Long Break (minutes)",
+    "autoStart": "Auto-start",
+    "autoStartBreaks": "Auto-start breaks",
+    "autoStartPomodoros": "Auto-start pomodoros",
+    "longBreakInterval": "Long Break Interval",
+    "longBreakAfter": "Long break after (pomodoros)",
+    "notifications": "Notifications",
+    "enableNotifications": "Enable Notifications",
+    "resetToDefaults": "Reset to Defaults",
+    "saveSettings": "Save Settings"
+  },
+  "metadata": {
+    "title": "Pomodex - Pomodoro Timer",
+    "description": "A beautiful and productive Pomodoro timer app"
+  }
+}
+

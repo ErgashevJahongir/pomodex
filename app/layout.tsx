@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Pomodex - Pomodoro Timer",
   description: "A beautiful and productive Pomodoro timer app",
-  manifest: '/manifest.webmanifest',
+  manifest: '/manifest.ts',
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-icon.png',
@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
