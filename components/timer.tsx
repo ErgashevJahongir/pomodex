@@ -3,11 +3,26 @@
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTimer } from '@/hooks/use-timer';
-import { formatTime, getProgressPercentage, getModeDisplayName, getModeColor } from '@/lib/time-utils';
+import {
+  formatTime,
+  getProgressPercentage,
+  getModeColor,
+} from '@/lib/time-utils';
 import { useTimerStore } from '@/store/timer-store';
+import { useTranslations } from 'next-intl';
 
 export function Timer() {
-  const { isRunning, isPaused, timeLeft, mode, completedPomodoros, handleStart, handlePause, handleReset } = useTimer();
+  const t = useTranslations('timer');
+  const {
+    isRunning,
+    isPaused,
+    timeLeft,
+    mode,
+    completedPomodoros,
+    handleStart,
+    handlePause,
+    handleReset,
+  } = useTimer();
   const { settings } = useTimerStore();
 
   const getTotalTime = () => {
@@ -32,25 +47,25 @@ export function Timer() {
   return (
     <div className="flex flex-col items-center space-y-8">
       {/* Mode selector */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+      <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
         {(['pomodoro', 'shortBreak', 'longBreak'] as const).map((timerMode) => (
           <button
             key={timerMode}
             onClick={() => useTimerStore.getState().setMode(timerMode)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
               mode === timerMode
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
             }`}
           >
-            {getModeDisplayName(timerMode)}
+            {t(timerMode)}
           </button>
         ))}
       </div>
 
       {/* Circular progress timer */}
       <div className="relative">
-        <svg className="w-64 h-64 transform -rotate-90" viewBox="0 0 200 200">
+        <svg className="h-64 w-64 -rotate-90 transform" viewBox="0 0 200 200">
           {/* Background circle */}
           <circle
             cx="100"
@@ -75,14 +90,14 @@ export function Timer() {
             strokeLinecap="round"
           />
         </svg>
-        
+
         {/* Timer display */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className={`text-4xl font-mono font-bold ${getModeColor(mode)}`}>
+          <div className={`font-mono text-4xl font-bold ${getModeColor(mode)}`}>
             {formatTime(timeLeft)}
           </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            {getModeDisplayName(mode)}
+          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            {t(mode)}
           </div>
         </div>
       </div>
@@ -92,36 +107,39 @@ export function Timer() {
         <Button
           onClick={isRunning ? handlePause : handleStart}
           size="lg"
-          className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full"
+          className="rounded-full px-8 py-3"
         >
           {isRunning ? (
             <>
-              <Pause className="w-5 h-5 mr-2" />
-              Pause
+              <Pause className="mr-2 h-5 w-5" />
+              {t('pause')}
             </>
           ) : (
             <>
-              <Play className="w-5 h-5 mr-2" />
-              {isPaused ? 'Resume' : 'Start'}
+              <Play className="mr-2 h-5 w-5" />
+              {isPaused ? t('resume') : t('start')}
             </>
           )}
         </Button>
-        
+
         <Button
           onClick={handleReset}
           variant="outline"
           size="lg"
-          className="px-8 py-3 rounded-full"
+          className="rounded-full px-8 py-3"
         >
-          <RotateCcw className="w-5 h-5 mr-2" />
-          Reset
+          <RotateCcw className="mr-2 h-5 w-5" />
+          {t('reset')}
         </Button>
       </div>
 
       {/* Stats */}
       <div className="text-center">
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          Completed Pomodoros: <span className="font-semibold text-gray-900 dark:text-white">{completedPomodoros}</span>
+          {t('completedPomodoros')}:{' '}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            {completedPomodoros}
+          </span>
         </div>
       </div>
     </div>

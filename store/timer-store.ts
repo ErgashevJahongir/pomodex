@@ -19,10 +19,10 @@ export interface TimerState {
   timeLeft: number; // seconds
   mode: TimerMode;
   completedPomodoros: number;
-  
+
   // Settings
   settings: TimerSettings;
-  
+
   // Actions
   startTimer: () => void;
   pauseTimer: () => void;
@@ -85,25 +85,30 @@ export const useTimerStore = create<TimerState>()(
       },
 
       tick: () => {
-        const { timeLeft, isRunning, mode, settings, completedPomodoros } = get();
-        
+        const { timeLeft, isRunning, mode, settings, completedPomodoros } =
+          get();
+
         if (!isRunning || timeLeft <= 0) return;
 
         const newTimeLeft = timeLeft - 1;
-        
+
         if (newTimeLeft <= 0) {
           // Timer finished
           set({ isRunning: false, isPaused: false });
-          
+
           // Handle completion
           if (mode === 'pomodoro') {
             const newCompletedPomodoros = completedPomodoros + 1;
-            const shouldTakeLongBreak = newCompletedPomodoros % settings.longBreakInterval === 0;
-            
+            const shouldTakeLongBreak =
+              newCompletedPomodoros % settings.longBreakInterval === 0;
+
             set({
               completedPomodoros: newCompletedPomodoros,
               mode: shouldTakeLongBreak ? 'longBreak' : 'shortBreak',
-              timeLeft: getInitialTime(shouldTakeLongBreak ? 'longBreak' : 'shortBreak', settings),
+              timeLeft: getInitialTime(
+                shouldTakeLongBreak ? 'longBreak' : 'shortBreak',
+                settings
+              ),
             });
           } else {
             // Break finished, go back to pomodoro
@@ -130,7 +135,7 @@ export const useTimerStore = create<TimerState>()(
       updateSettings: (newSettings: Partial<TimerSettings>) => {
         const { settings, mode } = get();
         const updatedSettings = { ...settings, ...newSettings };
-        
+
         set({
           settings: updatedSettings,
           timeLeft: getInitialTime(mode, updatedSettings),

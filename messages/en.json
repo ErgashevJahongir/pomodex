@@ -1,0 +1,37 @@
+{
+  "header": {
+    "toggleTheme": "Toggle theme",
+    "home": "Home"
+  },
+  "timer": {
+    "pomodoro": "Pomodoro",
+    "shortBreak": "Short Break",
+    "longBreak": "Long Break",
+    "pause": "Pause",
+    "start": "Start",
+    "resume": "Resume",
+    "reset": "Reset",
+    "completedPomodoros": "Completed Pomodoros"
+  },
+  "settings": {
+    "title": "Settings",
+    "timerDurations": "Timer Durations",
+    "pomodoroMinutes": "Pomodoro (minutes)",
+    "shortBreakMinutes": "Short Break (minutes)",
+    "longBreakMinutes": "Long Break (minutes)",
+    "autoStart": "Auto-start",
+    "autoStartBreaks": "Auto-start breaks",
+    "autoStartPomodoros": "Auto-start pomodoros",
+    "longBreakInterval": "Long Break Interval",
+    "longBreakAfter": "Long break after (pomodoros)",
+    "notifications": "Notifications",
+    "enableNotifications": "Enable Notifications",
+    "resetToDefaults": "Reset to Defaults",
+    "saveSettings": "Save Settings",
+    "close": "Close"
+  },
+  "metadata": {
+    "title": "Pomodex - Free Pomodoro Timer for Productivity & Focus",
+    "description": "Boost your productivity with Pomodex - a beautiful, free online Pomodoro timer. Perfect for work, study, and time management. Features: auto-start, notifications, and customizable intervals."
+  }
+}
