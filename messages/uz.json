@@ -1,6 +1,7 @@
 {
   "header": {
-    "toggleTheme": "Mavzuni o'zgartirish"
+    "toggleTheme": "Mavzuni o'zgartirish",
+    "home": "Bosh sahifa"
   },
   "timer": {
     "pomodoro": "Pomodoro",
@@ -26,11 +27,12 @@
     "notifications": "Bildirishnomalar",
     "enableNotifications": "Bildirishnomalarni Yoqish",
     "resetToDefaults": "Standart Sozlamalarga Qaytarish",
-    "saveSettings": "Sozlamalarni Saqlash"
+    "saveSettings": "Sozlamalarni Saqlash",
+    "close": "Yopish"
   },
   "metadata": {
-    "title": "Pomodex - Pomodoro Taymer",
-    "description": "Chiroyli va samarali Pomodoro taymer ilovasi"
+    "title": "Pomodex - Bepul Pomodoro Taymer - Samaradorlik va Diqqat",
+    "description": "Pomodex bilan samaradorlikni oshiring - chiroyli, bepul onlayn Pomodoro taymer. Ish, o'qish va vaqtni boshqarish uchun mukammal. Funksiyalar: avtomatik ishga tushirish, bildirishnomalar va sozlanuvchi intervallar."
   }
 }
 

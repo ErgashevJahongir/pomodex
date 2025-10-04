@@ -1,6 +1,7 @@
 {
   "header": {
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "home": "Home"
   },
   "timer": {
     "pomodoro": "Pomodoro",
@@ -26,11 +27,12 @@
     "notifications": "Notifications",
     "enableNotifications": "Enable Notifications",
     "resetToDefaults": "Reset to Defaults",
-    "saveSettings": "Save Settings"
+    "saveSettings": "Save Settings",
+    "close": "Close"
   },
   "metadata": {
-    "title": "Pomodex - Pomodoro Timer",
-    "description": "A beautiful and productive Pomodoro timer app"
+    "title": "Pomodex - Free Pomodoro Timer for Productivity & Focus",
+    "description": "Boost your productivity with Pomodex - a beautiful, free online Pomodoro timer. Perfect for work, study, and time management. Features: auto-start, notifications, and customizable intervals."
   }
 }
 

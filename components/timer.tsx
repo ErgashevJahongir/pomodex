@@ -94,7 +94,7 @@ export function Timer() {
         <Button
           onClick={isRunning ? handlePause : handleStart}
           size="lg"
-          className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full"
+          className="px-8 py-3 rounded-full"
         >
           {isRunning ? (
             <>

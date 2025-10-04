@@ -121,10 +121,64 @@
   }
 }
 
+/* Performance Optimizations */
+@layer base {
+  img {
+    content-visibility: auto;
+  }
+
+  @font-face {
+    font-display: swap;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+}
+
 .custom-screen{
   height: calc(100vh - 80px);
 }
 
 .min-custom-screen{
   min-height: calc(100vh - 80px);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.image-skeleton {
+  animation: shimmer 1.2s ease-in-out infinite;
+  background: linear-gradient(
+    to right,
+    oklch(0.92 0.004 286.32) 0%,
+    oklch(0.967 0.001 286.375) 20%,
+    oklch(0.92 0.004 286.32) 40%,
+    oklch(0.92 0.004 286.32) 100%
+  );
+  background-size: 936px 104px;
+}
+
+.dark .image-skeleton {
+  background: linear-gradient(
+    to right,
+    oklch(0.274 0.006 286.033) 0%,
+    oklch(0.21 0.006 285.885) 20%,
+    oklch(0.274 0.006 286.033) 40%,
+    oklch(0.274 0.006 286.033) 100%
+  );
 }
