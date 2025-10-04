@@ -1,7 +1,8 @@
 {
   "header": {
     "toggleTheme": "Mavzuni o'zgartirish",
-    "home": "Bosh sahifa"
+    "home": "Bosh sahifa",
+    "logout": "Chiqish"
   },
   "timer": {
     "pomodoro": "Pomodoro",
@@ -33,5 +34,32 @@
   "metadata": {
     "title": "Pomodex - Bepul Pomodoro Taymer - Samaradorlik va Diqqat",
     "description": "Pomodex bilan samaradorlikni oshiring - chiroyli, bepul onlayn Pomodoro taymer. Ish, o'qish va vaqtni boshqarish uchun mukammal. Funksiyalar: avtomatik ishga tushirish, bildirishnomalar va sozlanuvchi intervallar."
+  },
+  "auth": {
+    "login": "Kirish",
+    "signup": "Ro'yxatdan o'tish",
+    "email": "Email",
+    "password": "Parol",
+    "confirmPassword": "Parolni tasdiqlang",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "noAccount": "Hisobingiz yo'qmi?",
+    "hasAccount": "Allaqachon hisobingiz bormi?",
+    "continueWithGoogle": "Google bilan davom etish",
+    "continueWithGitHub": "GitHub bilan davom etish",
+    "or": "yoki",
+    "loginError": "Kirish xatosi. Iltimos, qaytadan urinib ko'ring.",
+    "loginSuccess": "Muvaffaqiyatli kirdingiz!",
+    "signupError": "Ro'yxatdan o'tish xatosi. Iltimos, qaytadan urinib ko'ring.",
+    "oauthError": "Kirish xatosi. Iltimos, qaytadan urinib ko'ring.",
+    "passwordMismatch": "Parollar mos emas",
+    "passwordTooShort": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
+    "passwordRequirement": "Kamida 6 ta belgi",
+    "loading": "Yuklanmoqda...",
+    "signupSuccess": "Muvaffaqiyatli ro'yxatdan o'tdingiz!",
+    "checkEmail": "Iltimos, emailingizni tekshiring va tasdiqlang.",
+    "loginTitle": "Hisobingizga kiring",
+    "signupTitle": "Yangi hisob yarating",
+    "loginDescription": "Davom etish uchun hisobingizga kiring",
+    "signupDescription": "Bepul hisob yaratish uchun ma'lumotlaringizni kiriting"
   }
 }
