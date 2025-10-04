@@ -4,10 +4,10 @@ import { Settings } from '@/components/settings';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors">
+    <div className="min-custom-screen bg-white dark:bg-black transition-colors">
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)]">
+      <main className="container mx-auto px-4">
+        <div className="flex flex-col items-center justify-center min-custom-screen">
           <Timer />
         </div>
       </main>

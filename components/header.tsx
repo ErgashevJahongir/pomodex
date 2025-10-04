@@ -3,21 +3,18 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { Logo } from './logo';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
 
   return (
     <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-      <div className="flex items-center space-x-2">
-        <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-          <span className="text-white font-bold text-sm">P</span>
-        </div>
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-          Pomodex
-        </h1>
-      </div>
-      
+      <Link href="/">
+        <Logo className="w-auto h-11 text-black dark:text-white" />
+      </Link>
+
       <Button
         variant="outline"
         size="icon"
