@@ -1,7 +1,19 @@
 import { useEffect, useCallback } from 'react';
 import { useTimerStore } from '@/store/timer-store';
 import { playNotificationSound, showNotification } from '@/lib/notifications';
-import { getModeDisplayName } from '@/lib/time-utils';
+
+const getModeDisplayName = (mode: string): string => {
+  switch (mode) {
+    case 'pomodoro':
+      return 'Pomodoro';
+    case 'shortBreak':
+      return 'Short Break';
+    case 'longBreak':
+      return 'Long Break';
+    default:
+      return 'Pomodoro';
+  }
+};
 
 export const useTimer = () => {
   const {

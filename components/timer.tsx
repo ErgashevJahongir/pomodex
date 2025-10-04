@@ -3,10 +3,12 @@
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTimer } from '@/hooks/use-timer';
-import { formatTime, getProgressPercentage, getModeDisplayName, getModeColor } from '@/lib/time-utils';
+import { formatTime, getProgressPercentage, getModeColor } from '@/lib/time-utils';
 import { useTimerStore } from '@/store/timer-store';
+import { useTranslations } from 'next-intl';
 
 export function Timer() {
+  const t = useTranslations('timer');
   const { isRunning, isPaused, timeLeft, mode, completedPomodoros, handleStart, handlePause, handleReset } = useTimer();
   const { settings } = useTimerStore();
 
@@ -43,7 +45,7 @@ export function Timer() {
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
-            {getModeDisplayName(timerMode)}
+            {t(timerMode)}
           </button>
         ))}
       </div>
@@ -82,7 +84,7 @@ export function Timer() {
             {formatTime(timeLeft)}
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            {getModeDisplayName(mode)}
+            {t(mode)}
           </div>
         </div>
       </div>
@@ -97,12 +99,12 @@ export function Timer() {
           {isRunning ? (
             <>
               <Pause className="w-5 h-5 mr-2" />
-              Pause
+              {t('pause')}
             </>
           ) : (
             <>
               <Play className="w-5 h-5 mr-2" />
-              {isPaused ? 'Resume' : 'Start'}
+              {isPaused ? t('resume') : t('start')}
             </>
           )}
         </Button>
@@ -114,14 +116,14 @@ export function Timer() {
           className="px-8 py-3 rounded-full"
         >
           <RotateCcw className="w-5 h-5 mr-2" />
-          Reset
+          {t('reset')}
         </Button>
       </div>
 
       {/* Stats */}
       <div className="text-center">
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          Completed Pomodoros: <span className="font-semibold text-gray-900 dark:text-white">{completedPomodoros}</span>
+          {t('completedPomodoros')}: <span className="font-semibold text-gray-900 dark:text-white">{completedPomodoros}</span>
         </div>
       </div>
     </div>

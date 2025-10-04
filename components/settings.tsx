@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { Settings as SettingsIcon, X, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSettings } from '@/hooks/use-settings';
+import { useTranslations } from 'next-intl';
 
 export function Settings() {
+  const t = useTranslations('settings');
   const [isOpen, setIsOpen] = useState(false);
   const { settings, updateSettings, resetSettings, requestNotificationPermission } = useSettings();
 
@@ -36,7 +38,7 @@ export function Settings() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Settings</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('title')}</h2>
               <Button
                 onClick={() => setIsOpen(false)}
                 variant="ghost"
@@ -49,12 +51,12 @@ export function Settings() {
             <div className="p-6 space-y-6">
               {/* Timer durations */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Timer Durations</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('timerDurations')}</h3>
                 
                 <div className="space-y-3">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Pomodoro (minutes)
+                      {t('pomodoroMinutes')}
                     </label>
                     <input
                       type="number"
@@ -68,7 +70,7 @@ export function Settings() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Short Break (minutes)
+                      {t('shortBreakMinutes')}
                     </label>
                     <input
                       type="number"
@@ -82,7 +84,7 @@ export function Settings() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Long Break (minutes)
+                      {t('longBreakMinutes')}
                     </label>
                     <input
                       type="number"
@@ -98,7 +100,7 @@ export function Settings() {
 
               {/* Auto-start settings */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Auto-start</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('autoStart')}</h3>
                 
                 <div className="space-y-3">
                   <label className="flex items-center">
@@ -109,7 +111,7 @@ export function Settings() {
                       className="rounded border-gray-300 text-red-600 focus:ring-red-500"
                     />
                     <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                      Auto-start breaks
+                      {t('autoStartBreaks')}
                     </span>
                   </label>
 
@@ -121,7 +123,7 @@ export function Settings() {
                       className="rounded border-gray-300 text-red-600 focus:ring-red-500"
                     />
                     <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                      Auto-start pomodoros
+                      {t('autoStartPomodoros')}
                     </span>
                   </label>
                 </div>
@@ -129,11 +131,11 @@ export function Settings() {
 
               {/* Long break interval */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Long Break Interval</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('longBreakInterval')}</h3>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Long break after (pomodoros)
+                    {t('longBreakAfter')}
                   </label>
                   <input
                     type="number"
@@ -148,7 +150,7 @@ export function Settings() {
 
               {/* Notifications */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Notifications</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('notifications')}</h3>
                 
                 <Button
                   onClick={handleRequestPermission}
@@ -156,7 +158,7 @@ export function Settings() {
                   className="w-full"
                 >
                   <Bell className="h-4 w-4 mr-2" />
-                  Enable Notifications
+                  {t('enableNotifications')}
                 </Button>
               </div>
 
@@ -167,13 +169,13 @@ export function Settings() {
                   variant="outline"
                   className="flex-1"
                 >
-                  Reset to Defaults
+                  {t('resetToDefaults')}
                 </Button>
                 <Button
                   onClick={handleSave}
                   className="flex-1 bg-red-500 hover:bg-red-600 text-white"
                 >
-                  Save Settings
+                  {t('saveSettings')}
                 </Button>
               </div>
             </div>

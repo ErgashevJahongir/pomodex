@@ -1,0 +1,36 @@
+{
+  "header": {
+    "toggleTheme": "Переключить тему"
+  },
+  "timer": {
+    "pomodoro": "Помодоро",
+    "shortBreak": "Короткий Перерыв",
+    "longBreak": "Длинный Перерыв",
+    "pause": "Пауза",
+    "start": "Старт",
+    "resume": "Продолжить",
+    "reset": "Сброс",
+    "completedPomodoros": "Завершенные Помодоро"
+  },
+  "settings": {
+    "title": "Настройки",
+    "timerDurations": "Длительность Таймера",
+    "pomodoroMinutes": "Помодоро (минуты)",
+    "shortBreakMinutes": "Короткий Перерыв (минуты)",
+    "longBreakMinutes": "Длинный Перерыв (минуты)",
+    "autoStart": "Автозапуск",
+    "autoStartBreaks": "Автоматически запускать перерывы",
+    "autoStartPomodoros": "Автоматически запускать помодоро",
+    "longBreakInterval": "Интервал Длинного Перерыва",
+    "longBreakAfter": "Длинный перерыв после (помодоро)",
+    "notifications": "Уведомления",
+    "enableNotifications": "Включить Уведомления",
+    "resetToDefaults": "Сбросить на Значения по Умолчанию",
+    "saveSettings": "Сохранить Настройки"
+  },
+  "metadata": {
+    "title": "Pomodex - Помодоро Таймер",
+    "description": "Красивое и продуктивное приложение Pomodoro таймер"
+  }
+}
+
