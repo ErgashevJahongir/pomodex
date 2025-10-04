@@ -5,7 +5,10 @@ export const formatTime = (seconds: number): string => {
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 };
 
-export const getProgressPercentage = (timeLeft: number, totalTime: number): number => {
+export const getProgressPercentage = (
+  timeLeft: number,
+  totalTime: number
+): number => {
   if (totalTime === 0) return 0;
   return ((totalTime - timeLeft) / totalTime) * 100;
 };

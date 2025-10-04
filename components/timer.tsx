@@ -3,13 +3,26 @@
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTimer } from '@/hooks/use-timer';
-import { formatTime, getProgressPercentage, getModeColor } from '@/lib/time-utils';
+import {
+  formatTime,
+  getProgressPercentage,
+  getModeColor,
+} from '@/lib/time-utils';
 import { useTimerStore } from '@/store/timer-store';
 import { useTranslations } from 'next-intl';
 
 export function Timer() {
   const t = useTranslations('timer');
-  const { isRunning, isPaused, timeLeft, mode, completedPomodoros, handleStart, handlePause, handleReset } = useTimer();
+  const {
+    isRunning,
+    isPaused,
+    timeLeft,
+    mode,
+    completedPomodoros,
+    handleStart,
+    handlePause,
+    handleReset,
+  } = useTimer();
   const { settings } = useTimerStore();
 
   const getTotalTime = () => {
@@ -77,7 +90,7 @@ export function Timer() {
             strokeLinecap="round"
           />
         </svg>
-        
+
         {/* Timer display */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <div className={`text-4xl font-mono font-bold ${getModeColor(mode)}`}>
@@ -108,7 +121,7 @@ export function Timer() {
             </>
           )}
         </Button>
-        
+
         <Button
           onClick={handleReset}
           variant="outline"
@@ -123,7 +136,10 @@ export function Timer() {
       {/* Stats */}
       <div className="text-center">
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          {t('completedPomodoros')}: <span className="font-semibold text-gray-900 dark:text-white">{completedPomodoros}</span>
+          {t('completedPomodoros')}:{' '}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            {completedPomodoros}
+          </span>
         </div>
       </div>
     </div>

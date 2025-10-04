@@ -12,7 +12,7 @@ export function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const currentLocale = (params.locale as Locale) || 'en';
 
   const handleLocaleChange = (newLocale: Locale) => {
@@ -34,8 +34,8 @@ export function LanguageSwitcher() {
 
       {isOpen && (
         <>
-          <div 
-            className="fixed inset-0 z-40" 
+          <div
+            className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           />
           <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
@@ -58,4 +58,3 @@ export function LanguageSwitcher() {
     </div>
   );
 }
-

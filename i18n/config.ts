@@ -8,4 +8,3 @@ export const localeNames: Record<Locale, string> = {
   uz: "O'zbek",
   ru: 'Русский',
 };
-
