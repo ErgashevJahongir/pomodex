@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { playNotificationSound } from '@/lib/notifications';
-import { saveTimerSession, updateTodayStats } from '@/lib/supabase/queries';
+import { saveTimerSession } from '@/lib/supabase/queries';
 import type { TimerModeDB } from '@/lib/supabase/types';
 
 export type TimerMode = 'pomodoro' | 'shortBreak' | 'longBreak';
@@ -15,6 +15,13 @@ export interface TimerSettings {
   longBreakInterval: number; // after how many pomodoros
   notificationSound: string; // sound file name
   soundVolume: number; // 0-100
+}
+
+export interface OfflineSession {
+  id: string;
+  mode: TimerModeDB;
+  duration: number;
+  completed_at: string;
 }
 
 export interface TimerState {
@@ -35,6 +42,12 @@ export interface TimerState {
   // Authentication state
   isAuthenticated: boolean;
   setIsAuthenticated: (state: boolean) => void;
+
+  // Offline sessions
+  offlineSessions: OfflineSession[];
+  addOfflineSession: (session: OfflineSession) => void;
+  syncOfflineSessions: () => Promise<void>;
+  clearOfflineSessions: () => void;
 
   // Actions
   startTimer: () => void;
@@ -97,6 +110,54 @@ export const useTimerStore = create<TimerState>()(
         });
       },
 
+      // Offline sessions
+      offlineSessions: [],
+      addOfflineSession: (session) => {
+        set((state) => ({
+          offlineSessions: [...state.offlineSessions, session],
+        }));
+      },
+      syncOfflineSessions: async () => {
+        const { offlineSessions, isAuthenticated } = get();
+        if (!isAuthenticated || offlineSessions.length === 0) return;
+
+        try {
+          // Birinchi navbatda sessions'ni olish va darhol tozalash
+          const sessionsToSync = [...offlineSessions];
+          set({ offlineSessions: [] }); // Darhol tozalash duplicate'larni oldini olish uchun
+
+          let successCount = 0;
+          let errorCount = 0;
+
+          for (const session of sessionsToSync) {
+            try {
+              await saveTimerSession(session.mode, session.duration);
+              successCount++;
+            } catch (error) {
+              console.error('Error syncing session:', error);
+              errorCount++;
+              // Agar xato bo'lsa, session'ni qaytarish
+              set((state) => ({
+                offlineSessions: [...state.offlineSessions, session],
+              }));
+            }
+          }
+
+          if (successCount > 0) {
+            console.warn(`Successfully synced ${successCount} timer sessions`);
+          }
+
+          if (errorCount > 0) {
+            console.error(`Failed to sync ${errorCount} timer sessions`);
+          }
+        } catch (error) {
+          console.error('Error syncing offline sessions:', error);
+        }
+      },
+      clearOfflineSessions: () => {
+        set({ offlineSessions: [] });
+      },
+
       // Actions
       startTimer: () => {
         set({ isRunning: true, isPaused: false });
@@ -153,17 +214,18 @@ export const useTimerStore = create<TimerState>()(
             }
           };
 
-          // Save timer session to backend (only for authenticated users)
-          if (isAuthenticated) {
-            let duration: number;
-            if (mode === 'pomodoro') {
-              duration = settings.pomodoro;
-            } else if (mode === 'shortBreak') {
-              duration = settings.shortBreak;
-            } else {
-              duration = settings.longBreak;
-            }
+          // Calculate duration
+          let duration: number;
+          if (mode === 'pomodoro') {
+            duration = settings.pomodoro;
+          } else if (mode === 'shortBreak') {
+            duration = settings.shortBreak;
+          } else {
+            duration = settings.longBreak;
+          }
 
+          // Save timer session (authenticated users go to backend, others to offline)
+          if (isAuthenticated) {
             saveTimerSession(getModeForDB(mode), duration).then(
               ({ success }) => {
                 if (success) {
@@ -173,6 +235,15 @@ export const useTimerStore = create<TimerState>()(
                 }
               }
             );
+          } else {
+            // Save to offline storage
+            const offlineSession: OfflineSession = {
+              id: crypto.randomUUID(),
+              mode: getModeForDB(mode),
+              duration,
+              completed_at: new Date().toISOString(),
+            };
+            get().addOfflineSession(offlineSession);
           }
 
           // Handle completion
@@ -189,19 +260,7 @@ export const useTimerStore = create<TimerState>()(
               timeLeft: getInitialTime(newMode, settings),
             });
 
-            // Update daily stats for completed pomodoro (only for authenticated users)
-            if (isAuthenticated) {
-              const totalFocusTime = newCompletedPomodoros * settings.pomodoro;
-              updateTodayStats(newCompletedPomodoros, totalFocusTime).then(
-                ({ success }) => {
-                  if (success) {
-                    console.warn('✅ Daily stats updated');
-                  } else {
-                    console.error('❌ Failed to update daily stats');
-                  }
-                }
-              );
-            }
+            // Daily stats pomodoro session saqlanganda avtomatik yangilanadi
 
             // Auto-start break if enabled
             if (settings.autoStartBreaks) {
@@ -265,7 +324,7 @@ export const useTimerStore = create<TimerState>()(
         settings: state.settings,
         completedPomodoros: state.completedPomodoros,
         mode: state.mode, // Timer mode'ni saqlash
-        timeLeft: state.timeLeft, // Time left'ni ham saqlash
+        offlineSessions: state.offlineSessions, // Offline sessions'ni saqlash
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {

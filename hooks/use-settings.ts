@@ -17,12 +17,42 @@ export const useSettings = () => {
   useEffect(() => {
     const supabase = createClient();
 
+    // Offline sessions'ni sync qilish funksiyasi
+    const syncOfflineSessionsIfNeeded = async (shouldShowToast = true) => {
+      const {
+        offlineSessions: currentOfflineSessions,
+        syncOfflineSessions: syncSessions,
+      } = useTimerStore.getState();
+
+      if (currentOfflineSessions.length > 0) {
+        try {
+          await syncSessions();
+          if (shouldShowToast) {
+            toast.success(
+              `${currentOfflineSessions.length} ta timer session backendga yuborildi`
+            );
+          }
+        } catch (err) {
+          console.error('Error syncing offline sessions:', err);
+          if (shouldShowToast) {
+            toast.error('Timer sessions sync qilinmadi');
+          }
+        }
+      }
+    };
+
     const initAuth = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      setIsAuthenticated(!!user);
-      // Settings'ni hydration tugagunga qadar kutamiz
+      const nowAuthenticated = !!user;
+      useTimerStore.getState().setIsAuthenticated(nowAuthenticated);
+      setIsAuthenticated(nowAuthenticated);
+
+      // Agar allaqachon login bo'lsa va offline sessions bor bo'lsa, bir marta sync
+      if (nowAuthenticated) {
+        await syncOfflineSessionsIfNeeded(true);
+      }
     };
 
     initAuth();
@@ -31,12 +61,21 @@ export const useSettings = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setIsAuthenticated(!!session);
-      // Settings'ni hydration tugagunga qadar kutamiz
+      const wasAuthenticated = isAuthenticated;
+      const nowAuthenticated = !!session;
+
+      // Store ichidagi auth holatini ham yangilaymiz
+      useTimerStore.getState().setIsAuthenticated(nowAuthenticated);
+      setIsAuthenticated(nowAuthenticated);
+
+      // Faqat guest -> logged-in transitionida sync qilamiz
+      if (!wasAuthenticated && nowAuthenticated) {
+        await syncOfflineSessionsIfNeeded(true);
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [isAuthenticated]);
 
   // Zustand hydration'ni kuzatish va settings'ni yuklash
   useEffect(() => {
@@ -146,11 +185,14 @@ export const useSettings = () => {
   };
 
   const handleUpdateSettings = (newSettings: Partial<typeof settings>) => {
+    // Faqat local state'ni yangilaymiz, backendga saqlamaymiz
     updateSettings(newSettings);
+  };
 
-    // Agar user login bo'lsa, Supabase'ga sync qilish
+  const handleSaveSettings = async () => {
+    // Hozirgi settings'ni backendga saqlash
     if (isAuthenticated) {
-      syncSettingsToSupabase(newSettings);
+      await syncSettingsToSupabase(settings);
     }
   };
 
@@ -187,6 +229,7 @@ export const useSettings = () => {
   return {
     settings,
     updateSettings: handleUpdateSettings,
+    saveSettings: handleSaveSettings,
     resetSettings: handleResetSettings,
     requestNotificationPermission: handleRequestNotificationPermission,
     isLoading,

@@ -1,7 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Settings as SettingsIcon, X, Bell, RotateCcw } from 'lucide-react';
+import {
+  Settings as SettingsIcon,
+  X,
+  Bell,
+  RotateCcw,
+  Moon,
+  Sun,
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,14 +34,17 @@ import { useSettings } from '@/hooks/use-settings';
 import { useTimerStore } from '@/store/timer-store';
 import { useTranslations } from 'next-intl';
 import { playNotificationSound } from '@/lib/notifications';
+import { LanguageSwitcher } from './language-switcher';
 
 export function Settings() {
   const t = useTranslations('settings');
   const [isOpen, setIsOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const { theme, setTheme } = useTheme();
   const {
     settings,
     updateSettings,
+    saveSettings,
     resetSettings,
     requestNotificationPermission,
   } = useSettings();
@@ -46,7 +57,8 @@ export function Settings() {
   // Agar hydration tugamagan bo'lsa, button disabled
   const isReady = isClient && _hasHydrated;
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    await saveSettings();
     setIsOpen(false);
   };
 
@@ -320,6 +332,56 @@ export function Settings() {
                     }
                     className="w-full"
                   />
+                </div>
+              </div>
+
+              {/* Theme and Language Settings */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Ko&apos;rinish va Til</h3>
+
+                {/* Theme Toggle */}
+                <div className="space-y-3">
+                  <Label className="flex items-center gap-2">Mavzu</Label>
+                  <div className="flex items-center justify-between rounded-lg border p-3">
+                    <div className="flex items-center gap-3">
+                      {theme === 'dark' ? (
+                        <Moon className="h-5 w-5" />
+                      ) : (
+                        <Sun className="h-5 w-5" />
+                      )}
+                      <span className="font-medium">
+                        {theme === 'dark' ? "Qorong'u mavzu" : "Yorug' mavzu"}
+                      </span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setTheme(theme === 'dark' ? 'light' : 'dark')
+                      }
+                      className="h-8"
+                    >
+                      {theme === 'dark' ? (
+                        <>
+                          <Sun className="mr-2 h-4 w-4" />
+                          Yorug&apos;
+                        </>
+                      ) : (
+                        <>
+                          <Moon className="mr-2 h-4 w-4" />
+                          Qorong&apos;u
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Language Switcher */}
+                <div className="space-y-3">
+                  <Label className="flex items-center gap-2">Til</Label>
+                  <div className="rounded-lg border p-3">
+                    <LanguageSwitcher />
+                  </div>
                 </div>
               </div>
             </CardContent>
