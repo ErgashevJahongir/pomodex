@@ -106,5 +106,27 @@
     "loginDescription": "Davom etish uchun hisobingizga kiring",
     "signupDescription": "Bepul hisob yaratish uchun ma'lumotlaringizni kiriting",
     "backToHome": "Bosh sahifaga qaytish"
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Profil ma'lumotlaringizni boshqaring",
+    "profileInfo": "Profil Ma'lumotlari",
+    "profileInfoDesc": "Username, ism va avatar'ingizni o'zgartiring",
+    "avatarUrl": "Avatar URL",
+    "username": "Username",
+    "usernameDesc": "Username boshqa userlar tomonidan ko'rinadi va unique bo'lishi kerak",
+    "displayName": "Ism",
+    "displayNamePlaceholder": "To'liq ismingiz",
+    "accountInfo": "Hisob Ma'lumotlari",
+    "email": "Email",
+    "registered": "Ro'yxatdan o'tgan",
+    "save": "Saqlash",
+    "saving": "Saqlanmoqda...",
+    "back": "Orqaga",
+    "profileUpdated": "Profile muvaffaqiyatli yangilandi",
+    "profileUpdateFailed": "Profile yangilanmadi",
+    "profileLoaded": "Profile yuklanmoqda...",
+    "noChanges": "Hech qanday o'zgarish yo'q",
+    "usernameTaken": "Username allaqachon ishlatilmoqda"
   }
 }

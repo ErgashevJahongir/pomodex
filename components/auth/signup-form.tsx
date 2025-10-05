@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/client';
+import { createUserProfile } from '@/lib/supabase/queries';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
@@ -37,7 +38,7 @@ export function SignupForm() {
     }
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -50,6 +51,20 @@ export function SignupForm() {
           description: error.message,
         });
         return;
+      }
+
+      // User profile yaratish (agar user yaratilgan bo'lsa)
+      if (data.user) {
+        try {
+          const profileResult = await createUserProfile(data.user.id, email);
+          if (!profileResult.success) {
+            console.error('Profile creation failed:', profileResult.error);
+            // Profile yaratishda xato bo'lsa ham signup muvaffaqiyatli deb hisoblaymiz
+          }
+        } catch (profileError) {
+          console.error('Profile creation error:', profileError);
+          // Profile yaratishda xato bo'lsa ham signup muvaffaqiyatli deb hisoblaymiz
+        }
       }
 
       toast.success(t('signupSuccess'), {

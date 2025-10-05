@@ -1,23 +1,36 @@
 'use client';
 
-import { Moon, Sun, LogOut, User, BarChart3 } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { LogOut, User, BarChart3, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/routing';
 import { Logo } from './logo';
-import { LanguageSwitcher } from './language-switcher';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
+import { getUserProfile } from '@/lib/supabase/queries';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export function Header() {
-  const { theme, setTheme } = useTheme();
   const t = useTranslations('header');
   const tAuth = useTranslations('auth');
   const router = useRouter();
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [userProfile, setUserProfile] = useState<{
+    id: string;
+    username: string;
+    display_name: string | null;
+    avatar_url: string | null;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
@@ -28,6 +41,13 @@ export function Header() {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
+
+      // Load user profile if user exists
+      if (user) {
+        const { data: profile } = await getUserProfile();
+        setUserProfile(profile);
+      }
+
       setLoading(false);
     };
 
@@ -36,8 +56,19 @@ export function Header() {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       setUser(session?.user ?? null);
+
+      // Load user profile if user exists
+      if (session?.user) {
+        const { data: profile } = await getUserProfile();
+        setUserProfile(profile);
+      } else {
+        setUserProfile(null);
+      }
+
+      // Set loading to false after auth state change
+      setLoading(false);
     });
 
     return () => {
@@ -57,39 +88,62 @@ export function Header() {
         <Link aria-label={t('home')} href="/">
           <Logo className="h-11 w-auto text-black dark:text-white" />
         </Link>
-
-        {user && (
-          <Link
-            href="/stats"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-          >
-            <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Statistika</span>
-          </Link>
-        )}
       </div>
 
       <div className="flex items-center space-x-2">
-        {!loading && (
+        {loading ? (
+          <div className="text-sm text-gray-500">Loading...</div>
+        ) : (
           <>
             {user ? (
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-2 rounded-md bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
-                  <User className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                  <span className="hidden text-sm text-gray-700 sm:inline dark:text-gray-300">
-                    {user.email?.split('@')[0]}
-                  </span>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="h-9"
-                >
-                  <LogOut className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">{t('logout')}</span>
-                </Button>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="flex h-9 items-center space-x-2 px-3"
+                  >
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage
+                        src={userProfile?.avatar_url || ''}
+                        alt="Profile"
+                      />
+                      <AvatarFallback className="text-xs">
+                        {userProfile?.display_name?.charAt(0) ||
+                          user.email?.charAt(0) ||
+                          'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="hidden text-sm sm:inline">
+                      {userProfile?.display_name || user.email?.split('@')[0]}
+                    </span>
+                    <ChevronDown className="h-3 w-3 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>Mening hisobim</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/stats" className="flex items-center">
+                      <BarChart3 className="mr-2 h-4 w-4" />
+                      <span>Statistika</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-red-600"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>{t('logout')}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Link href="/login">
                 <Button variant="outline" size="sm" className="h-9">
@@ -99,19 +153,6 @@ export function Header() {
             )}
           </>
         )}
-
-        <LanguageSwitcher />
-
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="h-9 w-9"
-        >
-          <Sun className="h-4 w-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute h-4 w-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">{t('toggleTheme')}</span>
-        </Button>
       </div>
     </header>
   );
