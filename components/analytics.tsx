@@ -1,4 +1,4 @@
-import Script from 'next/script';
+// import Script from 'next/script';
 
 export function GoogleAnalytics() {
   const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -7,7 +7,7 @@ export function GoogleAnalytics() {
 
   return (
     <>
-      <Script
+      {/* <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
         strategy="afterInteractive"
       />
@@ -20,7 +20,7 @@ export function GoogleAnalytics() {
             page_path: window.location.pathname,
           });
         `}
-      </Script>
+      </Script> */}
     </>
   );
 }
@@ -32,7 +32,7 @@ export function YandexMetrica() {
 
   return (
     <>
-      <Script id="yandex-metrica" strategy="afterInteractive">
+      {/* <Script id="yandex-metrica" strategy="afterInteractive">
         {`
           (function(m,e,t,r,i,k,a){
             m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -49,17 +49,16 @@ export function YandexMetrica() {
             webvisor:true
           });
         `}
-      </Script>
-      <noscript>
+      </Script> */}
+      {/* <noscript>
         <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+      <img
             src={`https://mc.yandex.ru/watch/${YM_ID}`}
             style={{ position: 'absolute', left: '-9999px' }}
             alt=""
           />
         </div>
-      </noscript>
+      </noscript> */}
     </>
   );
 }

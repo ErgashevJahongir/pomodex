@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { playNotificationSound } from '@/lib/notifications';
+import { saveTimerSession, updateTodayStats } from '@/lib/supabase/queries';
+import type { TimerModeDB } from '@/lib/supabase/types';
 
 export type TimerMode = 'pomodoro' | 'shortBreak' | 'longBreak';
 
@@ -10,6 +13,8 @@ export interface TimerSettings {
   autoStartBreaks: boolean;
   autoStartPomodoros: boolean;
   longBreakInterval: number; // after how many pomodoros
+  notificationSound: string; // sound file name
+  soundVolume: number; // 0-100
 }
 
 export interface TimerState {
@@ -22,6 +27,14 @@ export interface TimerState {
 
   // Settings
   settings: TimerSettings;
+
+  // Hydration state
+  _hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
+
+  // Authentication state
+  isAuthenticated: boolean;
+  setIsAuthenticated: (state: boolean) => void;
 
   // Actions
   startTimer: () => void;
@@ -40,6 +53,8 @@ const defaultSettings: TimerSettings = {
   autoStartBreaks: false,
   autoStartPomodoros: false,
   longBreakInterval: 4,
+  notificationSound: 'boxing_bell',
+  soundVolume: 70,
 };
 
 const getInitialTime = (mode: TimerMode, settings: TimerSettings): number => {
@@ -66,6 +81,22 @@ export const useTimerStore = create<TimerState>()(
       completedPomodoros: 0,
       settings: defaultSettings,
 
+      // Hydration state
+      _hasHydrated: false,
+      setHasHydrated: (state) => {
+        set({
+          _hasHydrated: state,
+        });
+      },
+
+      // Authentication state
+      isAuthenticated: false,
+      setIsAuthenticated: (state) => {
+        set({
+          isAuthenticated: state,
+        });
+      },
+
       // Actions
       startTimer: () => {
         set({ isRunning: true, isPaused: false });
@@ -85,8 +116,14 @@ export const useTimerStore = create<TimerState>()(
       },
 
       tick: () => {
-        const { timeLeft, isRunning, mode, settings, completedPomodoros } =
-          get();
+        const {
+          timeLeft,
+          isRunning,
+          mode,
+          settings,
+          completedPomodoros,
+          isAuthenticated,
+        } = get();
 
         if (!isRunning || timeLeft <= 0) return;
 
@@ -96,26 +133,95 @@ export const useTimerStore = create<TimerState>()(
           // Timer finished
           set({ isRunning: false, isPaused: false });
 
+          // Play notification sound first
+          playNotificationSound(
+            settings.notificationSound,
+            settings.soundVolume
+          );
+
+          // Helper function to convert mode to DB format
+          const getModeForDB = (mode: TimerMode): TimerModeDB => {
+            switch (mode) {
+              case 'pomodoro':
+                return 'pomodoro';
+              case 'shortBreak':
+                return 'short_break';
+              case 'longBreak':
+                return 'long_break';
+              default:
+                return 'pomodoro';
+            }
+          };
+
+          // Save timer session to backend (only for authenticated users)
+          if (isAuthenticated) {
+            let duration: number;
+            if (mode === 'pomodoro') {
+              duration = settings.pomodoro;
+            } else if (mode === 'shortBreak') {
+              duration = settings.shortBreak;
+            } else {
+              duration = settings.longBreak;
+            }
+
+            saveTimerSession(getModeForDB(mode), duration).then(
+              ({ success }) => {
+                if (success) {
+                  console.warn('✅ Timer session saved to backend');
+                } else {
+                  console.error('❌ Failed to save timer session to backend');
+                }
+              }
+            );
+          }
+
           // Handle completion
           if (mode === 'pomodoro') {
             const newCompletedPomodoros = completedPomodoros + 1;
             const shouldTakeLongBreak =
               newCompletedPomodoros % settings.longBreakInterval === 0;
 
+            const newMode = shouldTakeLongBreak ? 'longBreak' : 'shortBreak';
+
             set({
               completedPomodoros: newCompletedPomodoros,
-              mode: shouldTakeLongBreak ? 'longBreak' : 'shortBreak',
-              timeLeft: getInitialTime(
-                shouldTakeLongBreak ? 'longBreak' : 'shortBreak',
-                settings
-              ),
+              mode: newMode,
+              timeLeft: getInitialTime(newMode, settings),
             });
+
+            // Update daily stats for completed pomodoro (only for authenticated users)
+            if (isAuthenticated) {
+              const totalFocusTime = newCompletedPomodoros * settings.pomodoro;
+              updateTodayStats(newCompletedPomodoros, totalFocusTime).then(
+                ({ success }) => {
+                  if (success) {
+                    console.warn('✅ Daily stats updated');
+                  } else {
+                    console.error('❌ Failed to update daily stats');
+                  }
+                }
+              );
+            }
+
+            // Auto-start break if enabled
+            if (settings.autoStartBreaks) {
+              setTimeout(() => {
+                set({ isRunning: true, isPaused: false });
+              }, 2000); // 2 soniya kutish - notification uchun vaqt
+            }
           } else {
             // Break finished, go back to pomodoro
             set({
               mode: 'pomodoro',
               timeLeft: getInitialTime('pomodoro', settings),
             });
+
+            // Auto-start pomodoro if enabled
+            if (settings.autoStartPomodoros) {
+              setTimeout(() => {
+                set({ isRunning: true, isPaused: false });
+              }, 2000); // 2 soniya kutish - notification uchun vaqt
+            }
           }
         } else {
           set({ timeLeft: newTimeLeft });
@@ -158,7 +264,23 @@ export const useTimerStore = create<TimerState>()(
       partialize: (state) => ({
         settings: state.settings,
         completedPomodoros: state.completedPomodoros,
+        mode: state.mode, // Timer mode'ni saqlash
+        timeLeft: state.timeLeft, // Time left'ni ham saqlash
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          // Agar timeLeft saqlanmagan bo'lsa yoki noto'g'ri bo'lsa, recalculate qilish
+          const expectedTime = getInitialTime(state.mode, state.settings);
+          if (
+            state.timeLeft !== expectedTime &&
+            state.timeLeft > expectedTime
+          ) {
+            state.timeLeft = expectedTime;
+          }
+
+          state.setHasHydrated(true);
+        }
+      },
     }
   )
 );

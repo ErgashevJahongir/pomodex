@@ -1,6 +1,6 @@
 'use client';
 
-import { Moon, Sun, LogOut, User } from 'lucide-react';
+import { Moon, Sun, LogOut, User, BarChart3 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/routing';
@@ -53,9 +53,21 @@ export function Header() {
 
   return (
     <header className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
-      <Link aria-label={t('home')} href="/">
-        <Logo className="h-11 w-auto text-black dark:text-white" />
-      </Link>
+      <div className="flex items-center gap-6">
+        <Link aria-label={t('home')} href="/">
+          <Logo className="h-11 w-auto text-black dark:text-white" />
+        </Link>
+
+        {user && (
+          <Link
+            href="/stats"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            <BarChart3 className="h-4 w-4" />
+            <span className="hidden sm:inline">Statistika</span>
+          </Link>
+        )}
+      </div>
 
       <div className="flex items-center space-x-2">
         {!loading && (

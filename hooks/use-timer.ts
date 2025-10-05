@@ -1,6 +1,7 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useTimerStore } from '@/store/timer-store';
-import { playNotificationSound, showNotification } from '@/lib/notifications';
+import { showNotification } from '@/lib/notifications';
+import { createClient } from '@/lib/supabase/client';
 
 const getModeDisplayName = (mode: string): string => {
   switch (mode) {
@@ -22,12 +23,33 @@ export const useTimer = () => {
     timeLeft,
     mode,
     completedPomodoros,
+    settings,
     startTimer,
     pauseTimer,
     resetTimer,
     tick,
     setMode,
+    isAuthenticated,
+    setIsAuthenticated,
   } = useTimerStore();
+  const hasCompletedRef = useRef(false);
+
+  // User authentication statusini tekshirish
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setIsAuthenticated(!!user);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [setIsAuthenticated]);
 
   // Timer effect
   useEffect(() => {
@@ -48,9 +70,10 @@ export const useTimer = () => {
 
   // Handle timer completion
   useEffect(() => {
-    if (!isRunning && timeLeft === 0) {
-      // Play notification sound
-      playNotificationSound();
+    if (!isRunning && timeLeft === 0 && !hasCompletedRef.current) {
+      hasCompletedRef.current = true;
+
+      // Notification sound is now handled in the store's tick function
 
       // Show browser notification
       const modeName = getModeDisplayName(mode);
@@ -60,8 +83,24 @@ export const useTimer = () => {
           ? `Great job! You've completed ${completedPomodoros + 1} pomodoros.`
           : 'Break time is over. Ready for the next pomodoro?'
       );
+
+      // Backend save logic is now handled in the store's tick function
+
+      // Auto-start logic is now handled in the store's tick function
     }
-  }, [isRunning, timeLeft, mode, completedPomodoros]);
+
+    // Reset hasCompletedRef when timer starts again
+    if (timeLeft > 0) {
+      hasCompletedRef.current = false;
+    }
+  }, [
+    isRunning,
+    timeLeft,
+    mode,
+    completedPomodoros,
+    isAuthenticated,
+    settings,
+  ]);
 
   const handleStart = useCallback(() => {
     if (isPaused) {

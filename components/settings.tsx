@@ -1,12 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, X, Bell, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import {
   Card,
   CardContent,
@@ -15,17 +23,28 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useSettings } from '@/hooks/use-settings';
+import { useTimerStore } from '@/store/timer-store';
 import { useTranslations } from 'next-intl';
+import { playNotificationSound } from '@/lib/notifications';
 
 export function Settings() {
   const t = useTranslations('settings');
   const [isOpen, setIsOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const {
     settings,
     updateSettings,
     resetSettings,
     requestNotificationPermission,
   } = useSettings();
+  const { _hasHydrated } = useTimerStore();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Agar hydration tugamagan bo'lsa, button disabled
+  const isReady = isClient && _hasHydrated;
 
   const handleSave = () => {
     setIsOpen(false);
@@ -45,8 +64,9 @@ export function Settings() {
       <Button
         onClick={() => setIsOpen(true)}
         size="icon"
-        className="fixed right-6 bottom-6 z-50 h-14 w-14 rounded-full shadow-2xl transition-all hover:scale-110"
+        className="fixed right-6 bottom-6 z-50 h-14 w-14 rounded-full shadow-2xl transition-all hover:scale-110 disabled:cursor-not-allowed disabled:opacity-50"
         aria-label={t('title')}
+        disabled={!isReady}
       >
         <SettingsIcon className="h-6 w-6" />
       </Button>
@@ -234,6 +254,73 @@ export function Settings() {
                   <Bell className="mr-2 h-5 w-5" />
                   {t('enableNotifications')}
                 </Button>
+
+                {/* Notification Sound */}
+                <div className="space-y-2">
+                  <Label htmlFor="notification-sound">
+                    {t('notificationSound')}
+                  </Label>
+                  <Select
+                    value={settings.notificationSound}
+                    onValueChange={(value) =>
+                      updateSettings({ notificationSound: value })
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={t('notificationSound')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="boxing_bell">
+                        {t('boxingBell')}
+                      </SelectItem>
+                      <SelectItem value="doorbell">{t('doorbell')}</SelectItem>
+                      <SelectItem value="cute_sound">
+                        {t('cuteSound')}
+                      </SelectItem>
+                      <SelectItem value="magical_bell">
+                        {t('magicalBell')}
+                      </SelectItem>
+                      <SelectItem value="pop">{t('pop')}</SelectItem>
+                      <SelectItem value="work">{t('work')}</SelectItem>
+                      <SelectItem value="ohno">{t('ohno')}</SelectItem>
+                      <SelectItem value="what">{t('what')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    onClick={() =>
+                      playNotificationSound(
+                        settings.notificationSound,
+                        settings.soundVolume
+                      )
+                    }
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    {t('testSound')}
+                  </Button>
+                </div>
+
+                {/* Sound Volume */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="sound-volume">{t('soundVolume')}</Label>
+                    <span className="text-muted-foreground text-sm font-medium">
+                      {settings.soundVolume}%
+                    </span>
+                  </div>
+                  <Slider
+                    id="sound-volume"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={[settings.soundVolume]}
+                    onValueChange={(value) =>
+                      updateSettings({ soundVolume: value[0] })
+                    }
+                    className="w-full"
+                  />
+                </div>
               </div>
             </CardContent>
 

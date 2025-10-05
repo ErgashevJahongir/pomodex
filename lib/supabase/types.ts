@@ -2,6 +2,10 @@
  * Database types
  */
 
+// Database'dagi timer mode'lar (snake_case)
+export type TimerModeDB = 'pomodoro' | 'short_break' | 'long_break';
+
+// App'dagi timer mode'lar (camelCase)
 export type TimerMode = 'pomodoro' | 'shortBreak' | 'longBreak';
 
 export interface Database {
@@ -11,7 +15,7 @@ export interface Database {
         Row: {
           id: string;
           user_id: string;
-          mode: TimerMode;
+          mode: TimerModeDB;
           duration: number; // seconds
           completed_at: string;
           created_at: string;
@@ -19,7 +23,7 @@ export interface Database {
         Insert: {
           id?: string;
           user_id: string;
-          mode: TimerMode;
+          mode: TimerModeDB;
           duration: number;
           completed_at?: string;
           created_at?: string;
@@ -27,7 +31,7 @@ export interface Database {
         Update: {
           id?: string;
           user_id?: string;
-          mode?: TimerMode;
+          mode?: TimerModeDB;
           duration?: number;
           completed_at?: string;
           created_at?: string;
