@@ -10,7 +10,7 @@
 create table if not exists timer_sessions (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id) on delete cascade not null,
-  mode text not null check (mode in ('pomodoro', 'shortBreak', 'longBreak')),
+  mode text not null check (mode in ('pomodoro', 'short_break', 'long_break')),
   duration integer not null, -- seconds
   completed_at timestamp with time zone default now(),
   created_at timestamp with time zone default now()

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -24,7 +25,50 @@ export function Timer() {
     handlePause,
     handleReset,
   } = useTimer();
-  const { settings } = useTimerStore();
+  const { settings, _hasHydrated } = useTimerStore();
+  const [isClient, setIsClient] = useState(false);
+
+  // Client-side hydration'ni kutish
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Agar hydration tugamagan bo'lsa, skeleton loader ko'rsatish
+  if (!isClient || !_hasHydrated) {
+    return (
+      <Card className="mx-auto w-full max-w-md border-white/20 bg-white/10 shadow-xl backdrop-blur-sm dark:bg-black/20">
+        <CardContent className="space-y-8 p-8">
+          {/* Mode selector skeleton */}
+          <div className="flex justify-center gap-2">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-10 w-24 animate-pulse rounded-lg bg-white/10"
+              />
+            ))}
+          </div>
+
+          {/* Timer circle skeleton */}
+          <div className="flex items-center justify-center">
+            <div className="flex h-72 w-72 animate-pulse items-center justify-center rounded-full bg-white/10">
+              <div className="h-60 w-60 rounded-full bg-black/20" />
+            </div>
+          </div>
+
+          {/* Controls skeleton */}
+          <div className="flex justify-center gap-4">
+            <div className="h-14 w-14 animate-pulse rounded-full bg-white/10" />
+            <div className="h-14 w-14 animate-pulse rounded-full bg-white/10" />
+          </div>
+
+          {/* Stats skeleton */}
+          <div className="text-center">
+            <div className="mx-auto h-6 w-48 animate-pulse rounded bg-white/10" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const getTotalTime = () => {
     switch (mode) {
@@ -83,7 +127,7 @@ export function Timer() {
                 stroke="currentColor"
                 strokeWidth="10"
                 fill="none"
-                className="text-muted/20"
+                className="text-muted dark:text-muted/50"
               />
               {/* Progress circle */}
               <circle
