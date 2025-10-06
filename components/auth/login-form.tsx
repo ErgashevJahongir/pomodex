@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/client';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { toast } from 'sonner';
 
 export function LoginForm() {
@@ -76,18 +76,28 @@ export function LoginForm() {
         />
       </div>
 
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-between text-sm">
         <Link
           href="/forgot-password"
-          className="text-muted-foreground hover:text-primary text-sm underline-offset-4 transition-colors hover:underline"
+          className="text-black underline transition-opacity duration-300 hover:no-underline hover:opacity-80 dark:text-white"
         >
           {t('forgotPassword')}
         </Link>
       </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading} size="lg">
+      <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? t('loading') : t('login')}
       </Button>
+
+      <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+        {t('noAccount')}{' '}
+        <Link
+          href="/signup"
+          className="font-medium text-black underline transition-opacity duration-300 hover:no-underline hover:opacity-80 dark:text-white"
+        >
+          {t('signup')}
+        </Link>
+      </p>
     </form>
   );
 }
