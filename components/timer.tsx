@@ -116,7 +116,7 @@ export function Timer() {
           {/* Circular progress timer */}
           <div className="relative">
             <svg
-              className="h-72 w-72 -rotate-90 transform sm:h-80 sm:w-80"
+              className="h-64 w-64 -rotate-90 transform"
               viewBox="0 0 200 200"
             >
               {/* Background circle */}
@@ -125,9 +125,9 @@ export function Timer() {
                 cy="100"
                 r="90"
                 stroke="currentColor"
-                strokeWidth="10"
+                strokeWidth="8"
                 fill="none"
-                className="text-muted dark:text-muted/50"
+                className="text-gray-200 dark:text-gray-700"
               />
               {/* Progress circle */}
               <circle
@@ -135,7 +135,7 @@ export function Timer() {
                 cy="100"
                 r="90"
                 stroke="currentColor"
-                strokeWidth="10"
+                strokeWidth="8"
                 fill="none"
                 strokeDasharray={strokeDasharray}
                 strokeDashoffset={strokeDashoffset}
