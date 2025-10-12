@@ -1,4 +1,3 @@
-import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import { GoogleAnalytics, YandexMetrica } from '@/components/analytics';
@@ -8,42 +7,6 @@ const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin', 'cyrillic'],
 });
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#000000' },
-  ],
-};
-
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Pomodex',
-    default: 'Pomodex - Pomodoro Timer',
-  },
-  description: 'A beautiful and productive Pomodoro timer app',
-  applicationName: 'Pomodex',
-  manifest: '/manifest.json',
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
-    apple: '/apple-touch-icon.png',
-  },
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'Pomodex',
-  },
-  formatDetection: {
-    telephone: false,
-  },
-};
 
 export default function RootLayout({
   children,

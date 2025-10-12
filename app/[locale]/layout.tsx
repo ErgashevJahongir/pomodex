@@ -2,6 +2,48 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Toaster } from '@/components/ui/sonner';
 import Script from 'next/script';
+import type { Metadata, Viewport } from 'next';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+  ],
+};
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? `https://${process.env.NEXT_PUBLIC_SITE_URL}`
+  : 'http://localhost:3000';
+const locale = 'en';
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Pomodex',
+    default: 'Pomodex - Pomodoro Timer',
+  },
+  description: 'A beautiful and productive Pomodoro timer app',
+  applicationName: 'Pomodex',
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Pomodex',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
 
 export default async function MainLayout({
   children,
